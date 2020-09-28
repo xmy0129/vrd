@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        img{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<h1 align="center">作品列表</h1>
+<div id="list_div"></div>
+<button>加载更多</button>
+<script src="bootstrap3/jquery.min.js"></script>
+<script>
+//通过Ajax发出异步请求获取
+//type请求方式(get/post) url请求地址 data请求参数 success请求成功时回调的方法
+    $.ajax({
+        type:"get",
+        url:"list",
+        data:"",
+        success:function (list) {
+            //把json字符串转成数组
+            //let list = JSON.parse(result);
+            //遍历数组
+            for(let i = 0; i < list.length; i++){
+                let p = list[i];
+                var h3 = $("<h3></h3>");
+                var img = $("<img>");
+                h3.text(p.title);
+                img.attr("src",p.imgUrl);
+                $("#list_div").append(h3);
+                $("#list_div").append(img);
+            }
+        }
+    })
+/*
+* 1. 创建ListServlet 拦截路径为/list 在doGet方法中创建ProductDao调用findAll方法
+* 将得到的List集合通过昨天接触的Jackson框架 转成Json字符串 返回给客户端
+* 2. 客户端接收到数据后转成数组 并遍历 每一个作品创建一个h3标签显示标题 img标签显示作品图片
+* 添加到页面的list_div里面*/
+</script>
+</body>
+</html>
